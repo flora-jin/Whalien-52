@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whale Tracking</title>
+    <style>
+        #map { width: 100%; height: 600px; }
+        form { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Whale Tracking Map</h1>
+    <div id="map">{{ map_html | safe }}</div>
+
+    <h2>Report a Whale Sighting</h2>
+    <form id="whaleForm">
+        <label for="name">Your Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="location">Location Description:</label><br>
+        <input type="text" id="location" name="location"><br><br>
+        <label for="latitude">Latitude:</label><br>
+        <input type="number" step="any" id="latitude" name="latitude"><br><br>
+        <label for="longitude">Longitude:</label><br>
+        <input type="number" step="any" id="longitude" name="longitude"><br><br>
+        <button type="submit">Report Sighting</button>
+    </form>
+
+    <script>
+        // JavaScript to handle form submission via AJAX
+        document.getElementById('whaleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var formData = new FormData(this);
+            fetch('/report', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => alert(data.message));
+        });
+    </script>
+</body>
+</html>
